@@ -295,11 +295,8 @@ function buildPanelHTML(obj, period) {
     `
     : "";
 
-  return `
-    <p><strong>Selected period:</strong> ${pLabel} (${pStart}–${pEnd})</p>
+    return `
     ${year ? `<p><strong>Date:</strong> ${year}</p>` : ""}
-    ${subtitle ? `<h3>${subtitle}</h3>` : ""}
-    ${tagHtml}
     ${locHtml}
     ${body ? `<p>${body}</p>` : ""}
     ${imagesHtml}
