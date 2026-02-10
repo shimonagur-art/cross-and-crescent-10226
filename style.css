@@ -1,7 +1,7 @@
 :root { 
   --gap: 14px; 
   /* ✅ NEW: tweak this if header+timeline height changes */
-  --chromeH: 190px;
+  --chromeH: 210px;
 }
 
 * { 
