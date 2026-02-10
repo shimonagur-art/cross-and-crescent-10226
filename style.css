@@ -1,7 +1,5 @@
 :root { 
   --gap: 14px; 
-  /* ✅ NEW: tweak this if header+timeline height changes */
-  --chromeH: 210px;
 }
 
 * { 
@@ -176,18 +174,14 @@ body {
 }
 
 .mapWrap { 
-  /* ✅ NEW: make the wrap follow viewport height more closely */
-  min-height: calc(100vh - var(--chromeH));
+  min-height: 70vh; 
   position: relative;
   z-index: 0; /* create stacking context */
 }
 
 #map { 
   width: 100%; 
-  /* ✅ NEW: primary fix — map height adapts to screen height */
-  height: calc(100vh - var(--chromeH));
-  /* ✅ NEW: safety so it never exceeds the viewport */
-  max-height: 100vh;
+  height: 72vh; 
   border-radius: 10px; 
   border: 1px solid #e6e6e6; 
   overflow: hidden; 
@@ -316,11 +310,6 @@ body {
 @media (max-width: 900px) {
   .layout { 
     grid-template-columns: 1fr; 
-  }
-
-  /* ✅ NEW: slightly different offset on small screens (more stacked UI) */
-  :root { 
-    --chromeH: 230px; 
   }
 
   #map,
