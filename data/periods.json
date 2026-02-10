@@ -1,0 +1,91 @@
+{
+  "periods": [
+    {
+      "label": "1st Crusade",
+      "yearStart": 1096,
+      "yearEnd": 1099,
+      "objects": [
+        "obj_001",
+        "obj_005"
+      ]
+    },
+    {
+      "label": "2nd Crusade",
+      "yearStart": 1147,
+      "yearEnd": 1149,
+      "objects": [
+        "obj_002",
+        "obj_003",
+        "obj_005"
+      ]
+    },
+    {
+      "label": "3rd Crusade",
+      "yearStart": 1189,
+      "yearEnd": 1192,
+      "objects": [
+        "obj_003",
+        "obj_004",
+        "obj_005"
+      ]
+    },
+    {
+      "label": "4th Crusade",
+      "yearStart": 1202,
+      "yearEnd": 1204,
+      "objects": [
+        "obj_005",
+        "obj_015"
+      ]
+    },
+    {
+      "label": "5th Crusade",
+      "yearStart": 1217,
+      "yearEnd": 1221,
+      "objects": [
+        "obj_006"
+      ]
+    },
+    {
+      "label": "6th Crusade",
+      "yearStart": 1228,
+      "yearEnd": 1229,
+      "objects": [
+        "obj_006"
+      ]
+    },
+    {
+      "label": "7th Crusade",
+      "yearStart": 1248,
+      "yearEnd": 1254,
+      "objects": [
+        "obj_001",
+        "obj_003",
+        "obj_007",
+        "obj_008",
+        "obj_009",
+        "obj_010",
+        "obj_011",
+        "obj_014"
+      ]
+    },
+    {
+      "label": "8th Crusade",
+      "yearStart": 1270,
+      "yearEnd": 1270,
+      "objects": [
+        "obj_009"
+      ]
+    },
+    {
+      "label": "Post Crusades",
+      "yearStart": 1270,
+      "yearEnd": 1350,
+      "objects": [
+        "obj_009",
+        "obj_012",
+        "obj_013"
+      ]
+    }
+  ]
+}

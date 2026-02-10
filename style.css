@@ -1,0 +1,367 @@
+:root { 
+  --gap: 14px; 
+}
+
+* { 
+  box-sizing: border-box; 
+}
+
+body { 
+  margin: 0; 
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; 
+  color: #111; 
+}
+
+/* ================= Header ================= */
+
+.header {
+  padding: 16px 16px 10px;
+  border-bottom: 1px solid #e6e6e6;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 2000; /* must sit above Leaflet controls */
+}
+
+/* title left + legend right */
+.headerTop{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header__title h1 { 
+  margin: 0 0 4px; 
+  font-size: 18px; 
+}
+
+.header__title p { 
+  margin: 0; 
+  color: #444; 
+  font-size: 13px; 
+}
+
+/* ================= Legend ================= */
+
+.legend{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 2px;
+  font-size: 14px;
+  color: #111;
+  white-space: nowrap;
+}
+
+.legend__row{
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.legend__item{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Dots (categories) */
+.legend__dot{
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+.legend__dot--culture{ background: #2b6cb0; }
+.legend__dot--commerce{ background: #2f855a; }
+.legend__dot--conquest{ background: #c53030; }
+
+/* Dashed route lines */
+.legend__line{
+  width: 40px;
+  height: 0;
+  border-top: 4px dashed;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+/* Route colours */
+.legend__line--culture{ border-top-color: #2b6cb0; }
+.legend__line--commerce{ border-top-color: #2f855a; }
+.legend__line--conquest{ border-top-color: #c53030; }
+
+/* Centre route row under dot row (desktop only) */
+.legend__row:first-child { margin-right: 42px; }
+.legend__row:last-child  { margin-right: 42px; }
+
+/* ================= Timeline ================= */
+
+.timeline { 
+  margin-top: 10px; 
+  display: grid; 
+  gap: 8px; 
+}
+
+#periodRange { 
+  width: 100%; 
+}
+
+/* Period bands */
+.bands {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.25;
+  color: #666;
+}
+
+.bands span {
+  text-align: center;
+  padding: 6px 4px;
+  border-bottom: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.bands span:hover {
+  background: #f5f5f5;
+}
+
+.bands span:focus {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
+.bands strong {
+  display: block;
+  font-weight: 500;
+}
+
+.bands em {
+  display: block;
+  font-style: normal;
+  font-size: 10px;
+  color: #888;
+}
+
+.bands span.active {
+  color: #0b4f6c;
+  font-weight: 700;
+  background: #e6f2fa;
+}
+
+.bands span.active em {
+  color: #0b4f6c;
+}
+
+/* ================= Layout ================= */
+
+.layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--gap);
+  padding: var(--gap);
+  align-items: start;
+}
+
+.mapWrap { 
+  min-height: 70vh; 
+  position: relative;
+  z-index: 0; /* create stacking context */
+}
+
+#map { 
+  width: 100%; 
+  height: 72vh; 
+  border-radius: 10px; 
+  border: 1px solid #e6e6e6; 
+  overflow: hidden; 
+  position: relative;
+  z-index: 0; /* keep Leaflet under sticky header */
+}
+
+/* ================= Side Panel ================= */
+
+.panel {
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fff;
+  min-height: 72vh;
+}
+
+.panel h2 { 
+  margin: 0 0 10px; 
+  font-size: 16px; 
+}
+
+.panelBody { 
+  font-size: 14px; 
+  color: #222; 
+}
+
+.panelBody p { 
+  margin-top: 0; 
+}
+
+/* ================= Attribution ================= */
+
+.attribution { 
+  margin: 8px 2px 0; 
+  font-size: 12px; 
+  color: #555; 
+}
+
+.attribution a { 
+  color: inherit; 
+}
+
+/* ================= Hover tooltip (Leaflet) ================= */
+/* IMPORTANT: Leaflet tooltip has class "leaflet-tooltip" + your className "hover-tooltip" */
+.leaflet-tooltip.hover-tooltip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* Prevent Leaflet focus outlines appearing as “boxes” */
+.leaflet-interactive:focus {
+  outline: none !important;
+}
+
+/* The actual card */
+.hover-card {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 16px;
+  padding: 14px;
+  max-width: 420px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* ✅ Key fix: constrain the thumbnail */
+.hover-thumb {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 12px;
+  flex: 0 0 auto;
+  border: 1px solid #e6e6e6;
+  display: block;
+}
+
+/* Safety: never let images inside the tooltip blow up */
+.leaflet-tooltip.hover-tooltip img {
+  max-width: 92px !important;
+  max-height: 92px !important;
+}
+
+.hover-meta {
+  min-width: 0;
+}
+
+.hover-title {
+  font-weight: 800;
+  margin-bottom: 4px;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+/* Optional second line (your JS uses hover-year) */
+.hover-year {
+  font-size: 12px;
+  line-height: 1.25;
+  color: #444;
+  opacity: 0.95;
+}
+
+/* ================= Right panel image grid ================= */
+
+.panel-images {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.panel-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #e6e6e6;
+}
+
+/* ================= Responsive ================= */
+
+@media (max-width: 900px) {
+  .layout { 
+    grid-template-columns: 1fr; 
+  }
+
+  #map,
+  .panel { 
+    min-height: 55vh; 
+    height: 55vh; 
+  }
+
+  .bands {
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 8px;
+  }
+
+  /* Legend: allow wrapping and remove centring offsets on small screens */
+  .legend{
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  .legend__row{
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-right: 0;
+  }
+
+  .legend__dot{
+    width: 14px;
+    height: 14px;
+  }
+
+  .legend__line{
+    width: 34px;
+    border-top-width: 3px;
+  }
+
+  /* Slightly smaller hover card on mobile */
+  .hover-card {
+    max-width: 260px;
+    padding: 12px;
+  }
+
+  .hover-thumb {
+    width: 60px;
+    height: 60px;
+  }
+
+  .leaflet-tooltip.hover-tooltip img {
+    max-width: 60px !important;
+    max-height: 60px !important;
+  }
+
+  .panel-images {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,582 @@
+[
+  {
+    "id": "obj_001",
+    "title": "Casket",
+    "category": "Culture",
+    "tags": [],
+    "year": "ca. 1000-1150",
+    "hover": {
+      "thumb": "images/objects/obj_001/001thumb.jpg",
+      "text": "Casket",
+      "year": "ca. 1000-1150",
+      "location": "Sicily"
+    },
+    "panel": {
+      "subtitle": "Casket",
+      "body": "This casket displays the cultural exchange between Christians and Muslims, as despite being made in Sicily, it is inscribed with Islamic artwork and its base displays a rare woodcrafting technique that originates from Fatimid Cairo. The base's journey from North Africa to Europe also reflects the strong market connections between the two regions, with these Muslim products being seen as a sign of wealth and luxury to Christians in Europe.",
+      "year": "ca. 1000-1150",
+      "images": [
+        "images/objects/obj_001/001image1.jpg",
+        "images/objects/obj_001/001image2.jpg",
+        "images/objects/obj_001/001image3.jpg",
+        "images/objects/obj_001/001image4.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Sicily",
+        "lat": 37.6,
+        "lng": 14.0
+      }
+    ],
+    "routes": [
+      {
+        "toLat": 30.06,
+        "toLng": 31.26,
+        "influence": "commerce",
+        "toLabel": "Cairo"
+      }
+    ]
+  },
+  {
+    "id": "obj_002",
+    "title": "Casket",
+    "category": "Culture",
+    "tags": [],
+    "year": "ca. 1100-1200",
+    "hover": {
+      "thumb": "images/objects/obj_002/002thumb.jpg",
+      "text": "Casket",
+      "year": "ca. 1100-1200",
+      "location": "Sicily"
+    },
+    "panel": {
+      "subtitle": "Casket",
+      "body": "Made from ivory, with the unusally large diameter showing this to be made from elephant tusks, which was a material traded to Europe from the Islamic world. The casket once included Arabic inscriptions on each side of the lockplate, displaying the connection between Christians and Muslims in the Mediterranean.",
+      "year": "ca. 1100-1200",
+      "images": [
+        "images/objects/obj_002/002image1.jpg",
+        "images/objects/obj_002/002image2.jpg",
+        "images/objects/obj_002/002image3.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Sicily",
+        "lat": 37.58,
+        "lng": 13.97
+      }
+    ],
+    "routes": [
+      {
+        "toLat": 30.06,
+        "toLng": 31.26,
+        "influence": "commerce",
+        "toLabel": "Middle East"
+      }
+    ]
+  },
+  {
+    "id": "obj_003",
+    "title": "Coin",
+    "category": "Commerce",
+    "tags": [],
+    "year": "ca. 1140-1253",
+    "hover": {
+      "thumb": "images/objects/obj_003/003thumb.jpg",
+      "text": "Coin",
+      "year": "ca. 1140-1253",
+      "location": "Jerusalem"
+    },
+    "panel": {
+      "subtitle": "Coin",
+      "body": "Coins such as this were made in the Kingdom of Jerusalem and reflect a range of influence. Coins in European styles often depcited the dome of the Church of the Holy Sephulchre in Jerusalem, and the kingdom's coins were also known as 'bezants' after the Byzantine coinage. Notably, however, these coins copied Islamic 'denars', showing  Christian Europe's understanding of Islamic trade - a connection between the two religions.",
+      "year": "ca. 1140-1253",
+      "images": [
+        "images/objects/obj_003/003image1.jpg",
+        "images/objects/obj_003/003image2.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Jerusalem",
+        "lat": 31.783,
+        "lng": 35.23
+      }
+    ],
+    "routes": []
+  },
+  {
+    "id": "obj_004",
+    "title": "Impost Block (Temple Church)",
+    "category": "Conquest",
+    "tags": [],
+    "year": "1160",
+    "hover": {
+      "thumb": "images/objects/obj_004/004thumb.jpg",
+      "text": "Impost Block (Temple Church)",
+      "year": "1160",
+      "location": "London"
+    },
+    "panel": {
+      "subtitle": "Impost Block (Temple Church)",
+      "body": "This block was once part of the western doorway of the Temple Church (London) and displays aspects of the Romanesque style. The Temple Church is highly associated with the (monastic) Order of the Templars, who are arguably the religious order most associated with crusading - thus glorifying an image of Christian conquest to those who walk by.",
+      "year": "1160",
+      "images": [
+        "images/objects/obj_004/004image1.jpg",
+        "images/objects/obj_004/004image2.jpg",
+        "images/objects/obj_004/004image3.jpg",
+        "images/objects/obj_004/004image4.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "London",
+        "lat": 51.5074,
+        "lng": -0.1278
+      }
+    ],
+    "routes": []
+  },
+  {
+    "id": "obj_005",
+    "title": "The Virgin and Child",
+    "category": "Culture",
+    "tags": [],
+    "year": "ca. 1050-1100",
+    "hover": {
+      "thumb": "images/objects/obj_005/005thumb.jpg",
+      "text": "The Virgin and Child",
+      "year": "ca. 1050-1100",
+      "location": "Constantinople"
+    },
+    "panel": {
+      "subtitle": "The Virgin and Child",
+      "body": "This plaque was made sometime in the late 11th century and reflects typical Byzantine religious art. This type of art was highly valued by Christians in the West throughout the medieval period.",
+      "year": "ca. 1050-1100",
+      "images": [
+        "images/objects/obj_005/005image1.jpg",
+        "images/objects/obj_005/005image2.jpg",
+        "images/objects/obj_005/005image3.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Constantinople",
+        "lat": 41.0082,
+        "lng": 28.9784
+      }
+    ],
+    "routes": [
+      {
+        "toLat": 45.4408,
+        "toLng": 12.3155,
+        "influence": "conquest",
+        "toLabel": "Venice",
+        "periods": [3]
+      }
+    ]
+  },
+  {
+    "id": "obj_015",
+    "title": "The Virgin and Child",
+    "category": "Culture",
+    "tags": [],
+    "year": "ca. 1050-1101",
+    "hover": {
+      "thumb": "images/objects/obj_005/005thumb.jpg",
+      "text": "The Virgin and Child",
+      "year": "ca. 1050-1101",
+      "location": "Venice"
+    },
+    "panel": {
+      "subtitle": "The Virgin and Child",
+      "body": "During the 4th Crusade, the Crusaders turned their focus from the Holy Land and sacked Constantinople in 1204. This plaque was likely brought back from this conquest, and was found in Venice - showing that conquest was not exclusive to Christians against Muslims, but between different Christian Churches as well.",
+      "year": "ca. 1050-1101",
+      "images": [
+        "images/objects/obj_005/005image1.jpg",
+        "images/objects/obj_005/005image2.jpg",
+        "images/objects/obj_005/005image3.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Venice",
+        "lat": 45.4408,
+        "lng": 12.3155
+      }
+    ],
+    "routes": []
+  },
+  {
+    "id": "obj_006",
+    "title": "Ciborium",
+    "category": "Culture",
+    "tags": [],
+    "year": "ca. 1215-30",
+    "hover": {
+      "thumb": "images/objects/obj_006/006thumb.jpg",
+      "text": "Ciborium",
+      "year": "ca. 1215-30",
+      "location": "Limoges (France)"
+    },
+    "panel": {
+      "subtitle": "Ciborium",
+      "body": "A ciborium is a container for the host after consecration during mass. This ciborium is clearly influenced by Islamic art, having a band of Kufic (Arabic) script on its rim. Its diamond patterns are also an example of Islamic metalwork, highlighting cultural exchange between Muslims and Christians during the age of the Crusades.",
+      "year": "ca. 1215-30",
+      "images": [
+        "images/objects/obj_006/006image1.jpg",
+        "images/objects/obj_006/006image2.jpg",
+        "images/objects/obj_006/006image3.jpg",
+        "images/objects/obj_006/006image4.jpg",
+        "images/objects/obj_006/006image5.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Limoges (France)",
+        "lat": 45.8336,
+        "lng": 1.2611
+      }
+    ],
+    "routes": []
+  },
+  {
+    "id": "obj_007",
+    "title": "The Blacas Ewer",
+    "category": "Culture",
+    "tags": [],
+    "year": "1232",
+    "hover": {
+      "thumb": "images/objects/obj_007/007thumb.jpg",
+      "text": "The Blacas Ewer",
+      "year": "1232",
+      "location": "Mogul (Iraq)"
+    },
+    "panel": {
+      "subtitle": "The Blacas Ewer",
+      "body": "The ewer displays techniques developed in Herat (modern day Afghanistan) that were later adopted in Mogul, which became a major centre for metalwork. This ewer reflects a fusion of Persian, Chinese, and most significantly, Byzantine stylistic influences, highlighting that it was not just Europe which saw influence from the Islamic world, but the opposite was also seen to be true.",
+      "year": "1232",
+      "images": [
+        "images/objects/obj_007/007image1.jpg",
+        "images/objects/obj_007/007image2.jpg",
+        "images/objects/obj_007/007image3.jpg",
+        "images/objects/obj_007/007image4.jpg",
+        "images/objects/obj_007/007image5.jpg",
+        "images/objects/obj_007/007image6.jpg",
+        "images/objects/obj_007/007image7.jpg",
+        "images/objects/obj_007/007image8.jpg",
+        "images/objects/obj_007/007image9.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Mogul (Iraq)",
+        "lat": 36.3456,
+        "lng": 43.1575
+      }
+    ],
+    "routes": []
+  },
+  {
+    "id": "obj_008",
+    "title": "Tiles showing Richard and Saladin",
+    "category": "Culture",
+    "tags": [],
+    "year": "ca. 1250-60",
+    "hover": {
+      "thumb": "images/objects/obj_008/008thumb.jpg",
+      "text": "Tiles showing Richard and Saladin",
+      "year": "ca. 1250-60",
+      "location": "Chertsey (North England)"
+    },
+    "panel": {
+      "subtitle": "Tiles showing Richard and Saladin",
+      "body": "These tiles were placed on the floor of Chertsey Abbey, and they depict a battle between Richard the Lionheart against Saladin. They were part of a series of tiles designed to glorify the image of the English king, presenting an image of Chrsitian (mainly English) military strength to the public. Whilst Richard and Saladin never came face-to-face (as depicted on the tiles), Richard's army did fight Saladin's during the Third Crusade and won the 1191 Battle of Arsuf, showing how these tiles bring successful conquests into celebratory arts and culture in public display.",
+      "year": "ca. 1250-60",
+      "images": [
+        "images/objects/obj_008/008image1.jpg",
+        "images/objects/obj_008/008image2.jpg",
+        "images/objects/obj_008/008image3.jpg",
+        "images/objects/obj_008/008image4.jpg",
+        "images/objects/obj_008/008image5.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Chertsey (North England)",
+        "lat": 51.3886,
+        "lng": -0.5074
+      }
+    ],
+    "routes": [
+      {
+        "toLat": 31.8969,
+        "toLng": 35.0094,
+        "influence": "conquest",
+        "toLabel": "Jerusalem"
+      }
+    ]
+  },
+  {
+    "id": "obj_009",
+    "title": "Aquamanile",
+    "category": "Culture",
+    "tags": [],
+    "year": "ca. 1250-1350",
+    "hover": {
+      "thumb": "images/objects/obj_009/009thumb.jpg",
+      "text": "Aquamanile",
+      "year": "ca. 1250-1350",
+      "location": "Northamptonshire"
+    },
+    "panel": {
+      "subtitle": "Aquamanile",
+      "body": "Aquamaniles are water containers used for washing hands, with this hygeine being a sign of sophistication. Aquamaniles were often shaped like animals and they are based on Mediterranean and Islamic examples - another example of cultural exchange bewteen Islam and Christianity being used to display wealth by those who would have owned aquamaniles such as this one.",
+      "year": "ca. 1250-1350",
+      "images": [
+        "images/objects/obj_009/009image1.jpg",
+        "images/objects/obj_009/009image2.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Northamptonshire",
+        "lat": 52.2405,
+        "lng": -0.9027
+      }
+    ],
+    "routes": []
+  },
+  {
+    "id": "obj_010",
+    "title": "Water flask (Pilgrim flask)",
+    "category": "Commerce",
+    "tags": [],
+    "year": "ca. 1250-1260",
+    "hover": {
+      "thumb": "images/objects/obj_010/010thumb.jpg",
+      "text": "Water flask (Pilgrim flask)",
+      "year": "ca. 1250-1260",
+      "location": "Syria"
+    },
+    "panel": {
+      "subtitle": "Water flask (Pilgrim flask)",
+      "body": "This flask contains enameling on its glass, a skill developed by the glassmakers of Cairo and Damascus. On it, are images of warrior saints from Christian imagery (with their Crusader-style outfits) alongside scenes of courtly medieval Islamic societies. Traders came globally to exchange their goods, with items such as these finely decorated flasks being a significant gateway for trade between Europe and the Islamic world.",
+      "year": "ca. 1250-1260",
+      "images": [
+        "images/objects/obj_010/010image1.jpg",
+        "images/objects/obj_010/010image2.jpg",
+        "images/objects/obj_010/010image3.jpg",
+        "images/objects/obj_010/010image4.jpg",
+        "images/objects/obj_010/010image5.jpg",
+        "images/objects/obj_010/010image6.jpg",
+        "images/objects/obj_010/010image7.jpg",
+        "images/objects/obj_010/010image8.jpg",
+        "images/objects/obj_010/010image9.jpg",
+        "images/objects/obj_010/010image10.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Syria",
+        "lat": 33.5138,
+        "lng": 38.9000
+      }
+    ],
+    "routes": [
+      {
+        "toLat": 46.2276,
+        "toLng": 2.2137,
+        "influence": "culture",
+        "toLabel": "France"
+      }
+    ]
+  },
+  {
+    "id": "obj_011",
+    "title": "Box and Lid",
+    "category": "Conquest",
+    "tags": [],
+    "year": "ca. 1250",
+    "hover": {
+      "thumb": "images/objects/obj_011/011thumb.jpg",
+      "text": "Box and Lid",
+      "year": "ca. 1250",
+      "location": "Syria"
+    },
+    "panel": {
+      "subtitle": "Box and Lid",
+      "body": "This box was made for a Christian community in Syria - Christians in the East did not recognise the authority of the Pope in Rome and often quarrelled with Catholicism. The art on the box depicts Christians, however, this is done in an Islamic art style. The lid (with Arabic script written on it) was added later on, and shows how during the age of the Crusades, conflict was not just between Christians and Muslims, but also internally between different Christian denominations (it also reflects cultural unities between Orthodoxy and Islam).",
+      "year": "ca. 1250",
+      "images": [
+        "images/objects/obj_011/011image1.jpg",
+        "images/objects/obj_011/011image2.jpg",
+        "images/objects/obj_011/011image3.jpg",
+        "images/objects/obj_011/011image4.jpg",
+        "images/objects/obj_011/011image5.jpg",
+        "images/objects/obj_011/011image6.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Syria",
+        "lat": 33.5138,
+        "lng": 37.6000
+      }
+    ],
+    "routes": [
+      {
+        "toLat": 41.9028,
+        "toLng": 12.4964,
+        "influence": "conquest",
+        "toLabel": "Rome"
+      },
+      {
+        "toLat": 30.0,
+        "toLng": 36.0,
+        "influence": "Culture",
+        "toLabel": "Aman"
+      }
+    ]
+  },
+  {
+    "id": "obj_012",
+    "title": "Astrolabe",
+    "category": "Culture",
+    "tags": [],
+    "year": "ca. 1350",
+    "hover": {
+      "thumb": "images/objects/obj_012/012thumb.jpg",
+      "text": "Astrolabe",
+      "year": "ca. 1350",
+      "location": "Spain"
+    },
+    "panel": {
+      "subtitle": "Astrolabe",
+      "body": "This astrolabe was made in either Spain or Italy, and contains only Hebrew script. It displays the cultural coexistence between Christians and Jews in medieval Europe, which is significant due to the role Jewish merchants played in setting up  trade routes between Christian and Muslim traders in the early medieval period.",
+      "year": "ca. 1350",
+      "images": [
+        "images/objects/obj_012/012image1.jpg",
+        "images/objects/obj_012/012image2.jpg",
+        "images/objects/obj_012/012image3.jpg",
+        "images/objects/obj_012/012image4.jpg",
+        "images/objects/obj_012/012image5.jpg",
+        "images/objects/obj_012/012image6.jpg",
+        "images/objects/obj_012/012image7.jpg",
+        "images/objects/obj_012/012image8.jpg",
+        "images/objects/obj_012/012image9.jpg",
+        "images/objects/obj_012/012image10.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Spain",
+        "lat": 40.4168,
+        "lng": -3.7038
+      },
+      {
+        "label": "Italy",
+        "lat": 43.7696,
+        "lng": 11.2558
+      }
+    ],
+    "routes": [
+      {
+        "toLat": 31.8969,
+        "toLng": 35.0094,
+        "influence": "commerce",
+        "toLabel": "Jerusalem"
+      }
+    ]
+  },
+  {
+    "id": "obj_013",
+    "title": "\"The Luck of Edenhall\"",
+    "category": "Conquest",
+    "tags": [],
+    "year": "ca. 1350",
+    "hover": {
+      "thumb": "images/objects/obj_013/013thumb.jpg",
+      "text": "\"The Luck of Edenhall\"",
+      "year": "ca. 1350",
+      "location": "Cairo"
+    },
+    "panel": {
+      "subtitle": "\"The Luck of Edenhall\"",
+      "body": "\"The Luck of Edenhall\" is a glass produced in the Islamic world that eventually made its way to the Musgrave family, who resided in Edenhall, Cumberland. The glass was historically believed to have been brought back through Crusaders returning from their conquests, however, we now know it was only built nearly a century after the last Crusade. The glass also had a case built almost a century after its creation, which has the phrase \"Jesus, Saviour of Mankind\" inscribed in Latin - displaying a religious message to those who saw it as well as highlighting the value of the glass (as it was deemed important enough to have a protective layer). This object is thus a perfect example of the long-term blend between conquest, culture and commerce between Islam and Christianity, as its journey as well as the myths surrounding it cover the basis of all of thee connections.",
+      "year": "ca. 1350",
+      "images": [
+        "images/objects/obj_013/013image1.jpg",
+        "images/objects/obj_013/013image2.jpg",
+        "images/objects/obj_013/013image3.jpg",
+        "images/objects/obj_013/013image4.jpg",
+        "images/objects/obj_013/013image5.jpg",
+        "images/objects/obj_013/013image6.jpg",
+        "images/objects/obj_013/013image7.jpg",
+        "images/objects/obj_013/013image8.jpg",
+        "images/objects/obj_013/013image9.jpg",
+        "images/objects/obj_013/013image10.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Cairo",
+        "lat": 25.6872,
+        "lng": 32.6396
+      },
+      {
+        "label": "Damascus",
+        "lat": 36.2021,
+        "lng": 37.1343
+      }
+    ],
+    "routes": [
+      {
+        "toLat": 52.4862,
+        "toLng": -1.8904,
+        "influence": "commerce",
+        "toLabel": "Birmingham"
+      },
+      {
+        "toLat": 48.8566,
+        "toLng": 2.3522,
+        "influence": "Culture",
+        "toLabel": "Paris"
+      }
+    ]
+  },
+  {
+    "id": "obj_014",
+    "title": "Incense Burner",
+    "category": "Commerce",
+    "tags": [],
+    "year": "ca. 1250-1300",
+    "hover": {
+      "thumb": "images/objects/obj_014/014thumb.jpg",
+      "text": "Incense Burner",
+      "year": "ca. 1250-1300",
+      "location": "Damascus"
+    },
+    "panel": {
+      "subtitle": "Incense Burner",
+      "body": "This incense burner was made for a Christian patron in Ayyubid Damascus. It is decorated with a series of figures (some of which clearly representing Christian items such as the cross) and clearly displays the economic connection between Muslims and Christians through trading.",
+      "year": "ca. 1250-1300",
+      "images": [
+        "images/objects/obj_014/014image1.jpg",
+        "images/objects/obj_014/014image2.jpg",
+        "images/objects/obj_014/014image3.jpg",
+        "images/objects/obj_014/014image4.jpg",
+        "images/objects/obj_014/014image5.jpg"
+      ]
+    },
+    "locations": [
+      {
+        "label": "Damascus",
+        "lat": 33.5138,
+        "lng": 36.2765
+      }
+    ],
+    "routes": []
+  }
+]

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cross & Crescent — Artefact Movement (1096–1350)</title>
+
+  <!-- Leaflet (map library) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="headerTop">
+      <div class="header__title">
+        <h1>Artefact Movement (1096–1350)</h1>
+        <p>Use the period slider to filter influence/movement events.</p>
+      </div>
+
+      <!-- Legend -->
+      <div class="legend" aria-label="Map key">
+        <!-- Row 1: CCC -->
+        <div class="legend__row" aria-label="Category key">
+          <span class="legend__item">
+            <span class="legend__dot legend__dot--culture"></span>
+            Culture
+          </span>
+          <span class="legend__item">
+            <span class="legend__dot legend__dot--commerce"></span>
+            Commerce
+          </span>
+          <span class="legend__item">
+            <span class="legend__dot legend__dot--conquest"></span>
+            Conquest
+          </span>
+        </div>
+
+      <!-- Row 2: Routes -->
+<div class="legend__row" aria-label="Route key">
+  <span class="legend__item">
+    <span class="legend__line legend__line--culture"></span>
+    Culture
+  </span>
+  <span class="legend__item">
+    <span class="legend__line legend__line--commerce"></span>
+    Commerce
+  </span>
+  <span class="legend__item">
+    <span class="legend__line legend__line--conquest"></span>
+    Conquest
+  </span>
+</div>
+
+      </div>
+    </div>
+
+    <div class="timeline">
+      <label for="periodRange">
+        <strong>Period:</strong>
+        <span id="periodValue">1st Crusade (1096–1099)</span>
+      </label>
+
+      <input id="periodRange" type="range" min="0" max="8" value="0" step="1" />
+
+      <div class="bands">
+        <span data-index="0"><strong>1st Crusade</strong><em>1096–1099</em></span>
+        <span data-index="1"><strong>2nd Crusade</strong><em>1147–1149</em></span>
+        <span data-index="2"><strong>3rd Crusade</strong><em>1189–1192</em></span>
+        <span data-index="3"><strong>4th Crusade</strong><em>1202–1204</em></span>
+        <span data-index="4"><strong>5th Crusade</strong><em>1217–1221</em></span>
+        <span data-index="5"><strong>6th Crusade</strong><em>1228–1229</em></span>
+        <span data-index="6"><strong>7th Crusade</strong><em>1248–1254</em></span>
+        <span data-index="7"><strong>8th Crusade</strong><em>1270</em></span>
+        <span data-index="8"><strong>Post-Crusades</strong><em>1270–1350</em></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="mapWrap">
+      <div id="map"></div>
+      <p class="attribution">
+        Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>.
+      </p>
+    </section>
+
+    <aside class="panel">
+      <h2 id="panelTitle">Click a marker</h2>
+      <div id="panelBody" class="panelBody">
+        <p>Use the slider to change period. Markers/routes update.</p>
+      </div>
+    </aside>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
