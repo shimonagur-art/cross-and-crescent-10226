@@ -190,6 +190,49 @@ function fadeInMarker(marker, targetFillOpacity, durationMs = 450) {
   animateStyle(marker, { fillOpacity: 0, opacity: 0 }, { fillOpacity: targetFillOpacity, opacity: 1 }, durationMs);
 }
 
+// ✅ NEW: Create a curved route using Leaflet.Curve
+// Returns a layer that supports setLatLngs([from,to]) so your existing crawl code works.
+function makeCurvedRoute(fromLatLng, toLatLng, style) {
+  // Build control point in pixel space for consistent curve shape
+  const pA = map.latLngToLayerPoint(fromLatLng);
+  const pB = map.latLngToLayerPoint(toLatLng);
+
+  const mid = pA.add(pB).divideBy(2);
+  const dx = pB.x - pA.x;
+  const dy = pB.y - pA.y;
+
+  const len = Math.sqrt(dx * dx + dy * dy) || 1;
+
+  // perpendicular unit vector
+  const ux = -dy / len;
+  const uy = dx / len;
+
+  // Bend amount in pixels (scaled by distance, clamped)
+  const bend = Math.min(120, Math.max(40, len * 0.15));
+
+  const controlPoint = L.point(mid.x + ux * bend, mid.y + uy * bend);
+  const controlLatLng = map.layerPointToLatLng(controlPoint);
+
+  // Leaflet.Curve path: M (move) + Q (quadratic Bezier)
+  const curve = L.curve(
+    ["M", fromLatLng, "Q", controlLatLng, toLatLng],
+    style
+  );
+
+  // ✅ Compatibility shim:
+  // Your crawl animation calls polyline.setLatLngs([from, intermediate]).
+  // leaflet.curve doesn't have setLatLngs, so we provide a small wrapper
+  // that rebuilds the curve path while keeping the same control point.
+  curve.__curveControl = controlLatLng;
+  curve.setLatLngs = function (latlngs) {
+    const a = Array.isArray(latlngs) && latlngs[0] ? latlngs[0] : fromLatLng;
+    const b = Array.isArray(latlngs) && latlngs[1] ? latlngs[1] : toLatLng;
+    this.setPath(["M", a, "Q", this.__curveControl, b]);
+  };
+
+  return curve;
+}
+
 // ===== Dashed crawl animation WITHOUT dash-offset (no judder) =====
 async function animateRouteCrawl(polyline, {
   fromLatLng,
@@ -418,12 +461,15 @@ function drawForPeriod(periodIndex) {
         const from = L.latLng(Number(loc.lat), Number(loc.lng));
         const to = L.latLng(Number(r.toLat), Number(r.toLng));
 
-        const routeLine = L.polyline([from, from], {
+        // ✅ CHANGED: use curved route (starts as from->from for crawl)
+        const style = {
           color: routeColor(r.influence),
           weight: 3,
           opacity: 0.9,
           dashArray: "6 8"
-        }).addTo(routesLayer);
+        };
+
+        const routeLine = makeCurvedRoute(from, from, style).addTo(routesLayer);
 
         animateRouteCrawl(routeLine, {
           fromLatLng: from,
