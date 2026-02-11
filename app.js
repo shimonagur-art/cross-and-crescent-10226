@@ -11,7 +11,7 @@
 // Adds:
 //   - Fade-out old period then fade-in new period (smooth transitions)
 //   - Route "crawl" animation (dashed during crawl, no judder)
-//   - Curved routes using Leaflet.Curve (robust numeric validation)
+//   - ✅ Curved routes (no plugins; robust)
 // ==============================
 
 const periodRange = document.getElementById("periodRange");
@@ -53,6 +53,7 @@ function initMap() {
   map = L.map("map", { scrollWheelZoom: false }).setView([41.5, 18], 4);
 
   // ✅ Clean, label-free basemap (CARTO Light - No Labels)
+  // This removes city/place labels and keeps a quiet background.
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
     maxZoom: 20,
     subdomains: "abcd",
@@ -87,10 +88,12 @@ function updatePeriodUI(index) {
 function routeColor(influence) {
   const v = String(influence || "").trim().toLowerCase();
   if (v === "conquest" || v === "christianity") return "#c53030"; // red
-  if (v === "culture" || v === "cultural") return "#2b6cb0";      // blue
-  if (v === "commerce" || v === "commercial" || v === "islam") return "#2f855a"; // green
+  if (v === "culture" || indicatesCulture(v)) return "#2b6cb0";      // blue
+  if (v === "commerce" || indicatesCommerce(v) || v === "islam") return "#2f855a"; // green
   return "#0b4f6c"; // fallback teal
 }
+function indicatesCulture(v){ return v === "cultural"; }
+function indicatesCommerce(v){ return v === "commercial"; }
 
 function categoryColor(category) {
   const v = String(category || "").trim().toLowerCase();
@@ -100,7 +103,7 @@ function categoryColor(category) {
   return "#0b4f6c";                                              // fallback teal
 }
 
-// Marker visual states
+// Marker visual states (bigger; base semi-transparent; hover/selected opaque)
 function markerStyleBase(color) {
   return {
     radius: 11,
@@ -134,108 +137,9 @@ function markerStyleSelected(color) {
   };
 }
 
-// --- Fade helpers ---
+// --- Fade helpers (for period transitions) ---
 function easeLinear(t) { return t; }
 
 function animateStyle(layer, from, to, durationMs = 300, onDone) {
   const start = performance.now();
-  function tick(now) {
-    const t = Math.min(1, (now - start) / durationMs);
-    const e = easeLinear(t);
-
-    const cur = {};
-    for (const k of Object.keys(to)) {
-      const a = (from[k] ?? 0);
-      const b = to[k];
-      cur[k] = a + (b - a) * e;
-    }
-    layer.setStyle(cur);
-
-    if (t < 1) requestAnimationFrame(tick);
-    else if (onDone) onDone();
-  }
-  requestAnimationFrame(tick);
-}
-
-function fadeOutLayers(markersLayer, routesLayer, durationMs = 220) {
-  const markers = [];
-  markersLayer.eachLayer(l => markers.push(l));
-
-  const routes = [];
-  routesLayer.eachLayer(l => routes.push(l));
-
-  for (const m of markers) {
-    const from = {
-      fillOpacity: (typeof m.options?.fillOpacity === "number") ? m.options.fillOpacity : 0.5,
-      opacity: (typeof m.options?.opacity === "number") ? m.options.opacity : 1
-    };
-    const to = { fillOpacity: 0, opacity: 0 };
-    animateStyle(m, from, to, durationMs);
-  }
-
-  for (const r of routes) {
-    const from = { opacity: (typeof r.options?.opacity === "number") ? r.options.opacity : 0.9 };
-    const to = { opacity: 0 };
-    animateStyle(r, from, to, durationMs);
-  }
-
-  return new Promise(resolve => setTimeout(resolve, durationMs));
-}
-
-function fadeInMarker(marker, targetFillOpacity, durationMs = 450) {
-  marker.setStyle({ fillOpacity: 0, opacity: 0 });
-  animateStyle(marker, { fillOpacity: 0, opacity: 0 }, { fillOpacity: targetFillOpacity, opacity: 1 }, durationMs);
-}
-
-// --- Robust numeric parsing / validation (prevents leaflet.curve undefined x) ---
-function toFiniteNumber(v) {
-  // Accept numbers and numeric strings, reject "", null, NaN, Infinity
-  const n = (typeof v === "number") ? v : parseFloat(String(v).trim());
-  return Number.isFinite(n) ? n : null;
-}
-
-function toLatLngSafe(lat, lng) {
-  const la = toFiniteNumber(lat);
-  const lo = toFiniteNumber(lng);
-  if (la == null || lo == null) return null;
-  return L.latLng(la, lo);
-}
-
-// --- Curved route helper (Leaflet.Curve) ---
-// Uses arrays [lat, lng] for maximum compatibility with the plugin.
-function makeCurvedRoute(fromLatLng, toLatLng, style) {
-  // Fallback: if curve plugin isn't present or map not ready, draw straight line
-  const hasCurve = typeof L.curve === "function";
-  const mapReady = !!(map && map._loaded);
-  if (!hasCurve || !mapReady) {
-    const poly = L.polyline([fromLatLng, toLatLng], style);
-    return poly;
-  }
-
-  const pA = map.latLngToLayerPoint(fromLatLng);
-  const pB = map.latLngToLayerPoint(toLatLng);
-
-  // Extra safety (very defensive)
-  if (!pA || !pB || typeof pA.x !== "number" || typeof pB.x !== "number") {
-    const poly = L.polyline([fromLatLng, toLatLng], style);
-    return poly;
-  }
-
-  const mid = pA.add(pB).divideBy(2);
-  const dx = pB.x - pA.x;
-  const dy = pB.y - pA.y;
-  const len = Math.sqrt(dx * dx + dy * dy) || 1;
-
-  // perpendicular unit vector
-  const ux = -dy / len;
-  const uy = dx / len;
-
-  // Bend amount in pixels (scaled by distance, clamped)
-  const bend = Math.min(120, Math.max(40, len * 0.15));
-
-  const controlPoint = L.point(mid.x + ux * bend, mid.y + uy * bend);
-  const controlLatLng = map.layerPointToLatLng(controlPoint);
-
-  const A = [fromLatLng.lat, fromLatLng.lng];
-  const B = [toLatLng.lat, toLatLng.lng];
-  const C =
+  function tic
