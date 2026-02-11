@@ -11,6 +11,7 @@
 // Adds:
 //   - Fade-out old period then fade-in new period (smooth transitions)
 //   - Route "crawl" animation (dashed during crawl, no judder)
+//   - Curved routes using Leaflet.Curve (robust numeric validation)
 // ==============================
 
 const periodRange = document.getElementById("periodRange");
@@ -52,7 +53,6 @@ function initMap() {
   map = L.map("map", { scrollWheelZoom: false }).setView([41.5, 18], 4);
 
   // ✅ Clean, label-free basemap (CARTO Light - No Labels)
-  // This removes city/place labels and keeps a quiet background.
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
     maxZoom: 20,
     subdomains: "abcd",
@@ -84,8 +84,6 @@ function updatePeriodUI(index) {
 }
 
 // --- Color / style helpers ---
-// ✅ UPDATED: routes now use Culture / Commerce / Conquest (case-insensitive).
-// (Kept defensive aliases so older data won't break.)
 function routeColor(influence) {
   const v = String(influence || "").trim().toLowerCase();
   if (v === "conquest" || v === "christianity") return "#c53030"; // red
@@ -94,7 +92,6 @@ function routeColor(influence) {
   return "#0b4f6c"; // fallback teal
 }
 
-// ✅ UPDATED: categories now accept Culture / Commerce / Conquest.
 function categoryColor(category) {
   const v = String(category || "").trim().toLowerCase();
   if (v === "culture" || v === "cultural") return "#2b6cb0";     // blue
@@ -103,7 +100,7 @@ function categoryColor(category) {
   return "#0b4f6c";                                              // fallback teal
 }
 
-// Marker visual states (bigger; base semi-transparent; hover/selected opaque)
+// Marker visual states
 function markerStyleBase(color) {
   return {
     radius: 11,
@@ -137,7 +134,7 @@ function markerStyleSelected(color) {
   };
 }
 
-// --- Fade helpers (for period transitions) ---
+// --- Fade helpers ---
 function easeLinear(t) { return t; }
 
 function animateStyle(layer, from, to, durationMs = 300, onDone) {
@@ -190,17 +187,43 @@ function fadeInMarker(marker, targetFillOpacity, durationMs = 450) {
   animateStyle(marker, { fillOpacity: 0, opacity: 0 }, { fillOpacity: targetFillOpacity, opacity: 1 }, durationMs);
 }
 
-// ✅ NEW: Create a curved route using Leaflet.Curve
-// Returns a layer that supports setLatLngs([from,to]) so your existing crawl code works.
+// --- Robust numeric parsing / validation (prevents leaflet.curve undefined x) ---
+function toFiniteNumber(v) {
+  // Accept numbers and numeric strings, reject "", null, NaN, Infinity
+  const n = (typeof v === "number") ? v : parseFloat(String(v).trim());
+  return Number.isFinite(n) ? n : null;
+}
+
+function toLatLngSafe(lat, lng) {
+  const la = toFiniteNumber(lat);
+  const lo = toFiniteNumber(lng);
+  if (la == null || lo == null) return null;
+  return L.latLng(la, lo);
+}
+
+// --- Curved route helper (Leaflet.Curve) ---
+// Uses arrays [lat, lng] for maximum compatibility with the plugin.
 function makeCurvedRoute(fromLatLng, toLatLng, style) {
-  // Build control point in pixel space for consistent curve shape
+  // Fallback: if curve plugin isn't present or map not ready, draw straight line
+  const hasCurve = typeof L.curve === "function";
+  const mapReady = !!(map && map._loaded);
+  if (!hasCurve || !mapReady) {
+    const poly = L.polyline([fromLatLng, toLatLng], style);
+    return poly;
+  }
+
   const pA = map.latLngToLayerPoint(fromLatLng);
   const pB = map.latLngToLayerPoint(toLatLng);
+
+  // Extra safety (very defensive)
+  if (!pA || !pB || typeof pA.x !== "number" || typeof pB.x !== "number") {
+    const poly = L.polyline([fromLatLng, toLatLng], style);
+    return poly;
+  }
 
   const mid = pA.add(pB).divideBy(2);
   const dx = pB.x - pA.x;
   const dy = pB.y - pA.y;
-
   const len = Math.sqrt(dx * dx + dy * dy) || 1;
 
   // perpendicular unit vector
@@ -213,331 +236,6 @@ function makeCurvedRoute(fromLatLng, toLatLng, style) {
   const controlPoint = L.point(mid.x + ux * bend, mid.y + uy * bend);
   const controlLatLng = map.layerPointToLatLng(controlPoint);
 
-  // Leaflet.Curve path: M (move) + Q (quadratic Bezier)
-  const curve = L.curve(
-    ["M", fromLatLng, "Q", controlLatLng, toLatLng],
-    style
-  );
-
-  // ✅ Compatibility shim:
-  // Your crawl animation calls polyline.setLatLngs([from, intermediate]).
-  // leaflet.curve doesn't have setLatLngs, so we provide a small wrapper
-  // that rebuilds the curve path while keeping the same control point.
-  curve.__curveControl = controlLatLng;
-  curve.setLatLngs = function (latlngs) {
-    const a = Array.isArray(latlngs) && latlngs[0] ? latlngs[0] : fromLatLng;
-    const b = Array.isArray(latlngs) && latlngs[1] ? latlngs[1] : toLatLng;
-    this.setPath(["M", a, "Q", this.__curveControl, b]);
-  };
-
-  return curve;
-}
-
-// ===== Dashed crawl animation WITHOUT dash-offset (no judder) =====
-async function animateRouteCrawl(polyline, {
-  fromLatLng,
-  toLatLng,
-  durationMs = 1500,
-  delayMs = 0,
-  token
-} = {}) {
-  if (delayMs > 0) await new Promise(r => setTimeout(r, delayMs));
-  if (token !== renderToken) return;
-
-  const start = performance.now();
-
-  function frame(now) {
-    if (token !== renderToken) return;
-
-    const t = Math.min(1, (now - start) / durationMs);
-    const e = easeLinear(t);
-
-    const lat = fromLatLng.lat + (toLatLng.lat - fromLatLng.lat) * e;
-    const lng = fromLatLng.lng + (toLatLng.lng - fromLatLng.lng) * e;
-
-    polyline.setLatLngs([fromLatLng, L.latLng(lat, lng)]);
-
-    if (t < 1) requestAnimationFrame(frame);
-    else {
-      polyline.setLatLngs([fromLatLng, toLatLng]);
-    }
-  }
-
-  requestAnimationFrame(frame);
-}
-
-// ✅ NEW: helper for period-aware routes
-function routeVisibleInPeriod(route, periodIndex) {
-  const p = route?.periods;
-  if (!p || !Array.isArray(p) || p.length === 0) return true; // default: show always
-  return p.includes(periodIndex);
-}
-
-// --- Hover tooltip HTML (minimal) ---
-// ✅ UPDATED: accept a per-marker location label, so objects with multiple
-// locations show the correct location on each marker’s hover card.
-function buildHoverHTML(obj, locLabel) {
-  const title = escapeHtml(obj?.title || obj?.id || "Object");
-  const thumb = String(obj?.hover?.thumb || "").trim();
-  const yearRaw = obj?.hover?.year ?? obj?.year ?? "";
-  const year = yearRaw ? escapeHtml(yearRaw) : "";
-
-  // Use per-marker label first, fall back to obj.hover.location if present
-  const locRaw = locLabel ?? obj?.hover?.location ?? "";
-  const loc = locRaw ? escapeHtml(locRaw) : "";
-
-  const imgHtml = thumb
-    ? `<img class="hover-thumb" src="${escapeHtml(thumb)}" alt="${title}" />`
-    : "";
-
-  return `
-    <div class="hover-card">
-      ${imgHtml}
-      <div class="hover-meta">
-        <div class="hover-title">${title}</div>
-        ${loc ? `<div class="hover-year">${loc}</div>` : ""}
-        ${year ? `<div class="hover-year">${year}</div>` : ""}
-      </div>
-    </div>
-  `;
-}
-
-// --- Right panel HTML ---
-function buildPanelHTML(obj, period) {
-  const title = escapeHtml(obj?.title || obj?.id || "Object");
-  const subtitle = escapeHtml(obj?.panel?.subtitle || "");
-  const body = escapeHtml(obj?.panel?.body || "");
-
-  // ✅ NEW: show year/date label in panel (comes from year_lable mapping)
-  const yearRaw = obj?.panel?.year ?? obj?.hover?.year ?? obj?.year ?? "";
-  const year = yearRaw ? escapeHtml(yearRaw) : "";
-
-  const tags = Array.isArray(obj?.tags) ? obj.tags : [];
-  const tagHtml = tags.length
-    ? `<p><strong>Tags:</strong> ${tags.map(t => escapeHtml(t)).join(", ")}</p>`
-    : "";
-
-  const locs = Array.isArray(obj?.locations) ? obj.locations : [];
-  const locHtml = locs.length
-    ? `<p><strong>Locations:</strong> ${locs.map(l => escapeHtml(l.label || "")).filter(Boolean).join(", ")}</p>`
-    : "";
-
-  const pLabel = escapeHtml(period?.label || "");
-  const pStart = escapeHtml(period?.yearStart ?? "");
-  const pEnd = escapeHtml(period?.yearEnd ?? "");
-
-  const images = Array.isArray(obj?.panel?.images) ? obj.panel.images : [];
-  const imagesHtml = images.length
-    ? `
-      <div class="panel-images">
-        ${images
-          .filter(Boolean)
-          .map(src => `<img class="panel-img" src="${escapeHtml(src)}" alt="${title}" />`)
-          .join("")}
-      </div>
-    `
-    : "";
-
-    return `
-    ${year ? `<p><strong>Date:</strong> ${year}</p>` : ""}
-    ${locHtml}
-    ${body ? `<p>${body}</p>` : ""}
-    ${imagesHtml}
-  `;
-}
-
-// --- Data loading ---
-async function loadData() {
-  const [objectsRes, periodsRes] = await Promise.all([
-    fetch("data/objects.json", { cache: "no-store" }),
-    fetch("data/periods.json", { cache: "no-store" })
-  ]);
-
-  if (!objectsRes.ok) throw new Error("Failed to load data/objects.json");
-  if (!periodsRes.ok) throw new Error("Failed to load data/periods.json");
-
-  const objectsArr = await objectsRes.json();
-  const periodsObj = await periodsRes.json();
-
-  if (!Array.isArray(objectsArr)) {
-    throw new Error("objects.json must be an array of objects");
-  }
-  if (!periodsObj || !Array.isArray(periodsObj.periods)) {
-    throw new Error('periods.json must be an object like: { "periods": [ ... ] }');
-  }
-
-  OBJECTS_BY_ID = new Map(objectsArr.map(o => [o.id, o]));
-  PERIODS = periodsObj.periods;
-
-  periodRange.min = "0";
-  periodRange.max = String(Math.max(0, PERIODS.length - 1));
-  if (!periodRange.value) periodRange.value = "0";
-
-  const v = Number(periodRange.value);
-  if (v > PERIODS.length - 1) periodRange.value = String(PERIODS.length - 1);
-}
-
-// --- Render for a period index ---
-function drawForPeriod(periodIndex) {
-  renderToken++;
-  const token = renderToken;
-
-  let routeIndex = 0;
-
-  const period = PERIODS[periodIndex];
-  clearLayers();
-
-  if (!period) {
-    setPanel("No period", "<p>Period not found.</p>");
-    return;
-  }
-
-  const objectIds = Array.isArray(period.objects) ? period.objects : [];
-
-  if (objectIds.length === 0) {
-    setPanel("No objects", `<p>No objects configured for ${escapeHtml(period.label)}.</p>`);
-    return;
-  }
-
-  for (const id of objectIds) {
-    const obj = OBJECTS_BY_ID.get(id);
-    if (!obj) continue;
-
-    const col = categoryColor(obj.category);
-    const baseStyle = markerStyleBase(col);
-    const hoverStyle = markerStyleHover(col);
-    const selectedStyle = markerStyleSelected(col);
-
-    const locations = Array.isArray(obj.locations) ? obj.locations : [];
-    const routes = Array.isArray(obj.routes) ? obj.routes : [];
-
-    if (locations.length === 0) continue;
-
-    for (const loc of locations) {
-      if (loc?.lat == null || loc?.lng == null) continue;
-
-      const marker = L.circleMarker([Number(loc.lat), Number(loc.lng)], baseStyle);
-      marker.__baseStyle = baseStyle;
-      marker.__hoverStyle = hoverStyle;
-      marker.__selectedStyle = selectedStyle;
-
-      // ✅ UPDATED: pass loc.label so hover card shows correct place per marker
-      marker.bindTooltip(buildHoverHTML(obj, loc.label), {
-        direction: "top",
-        offset: [0, -10],
-        opacity: 1,
-        className: "hover-tooltip",
-        sticky: true
-      });
-
-      marker.on("mouseover", () => {
-        if (selectedMarker === marker) return;
-        marker.setStyle(marker.__hoverStyle);
-      });
-
-      marker.on("mouseout", () => {
-        if (selectedMarker === marker) return;
-        marker.setStyle(marker.__baseStyle);
-      });
-
-      marker.on("click", () => {
-        if (selectedMarker && selectedMarker !== marker) {
-          selectedMarker.setStyle(selectedMarker.__baseStyle);
-        }
-        selectedMarker = marker;
-        marker.setStyle(marker.__selectedStyle);
-        setPanel(obj.title || obj.id || "Object", buildPanelHTML(obj, period));
-      });
-
-      marker.addTo(markersLayer);
-      fadeInMarker(marker, marker.__baseStyle.fillOpacity, 400);
-
-      for (const r of routes) {
-        // ✅ NEW: skip route if not meant for this period
-        if (!routeVisibleInPeriod(r, periodIndex)) continue;
-
-        if (r?.toLat == null || r?.toLng == null) continue;
-
-        const from = L.latLng(Number(loc.lat), Number(loc.lng));
-        const to = L.latLng(Number(r.toLat), Number(r.toLng));
-
-        // ✅ CHANGED: use curved route (starts as from->from for crawl)
-        const style = {
-          color: routeColor(r.influence),
-          weight: 3,
-          opacity: 0.9,
-          dashArray: "6 8"
-        };
-
-        const routeLine = makeCurvedRoute(from, from, style).addTo(routesLayer);
-
-        animateRouteCrawl(routeLine, {
-          fromLatLng: from,
-          toLatLng: to,
-          durationMs: 1500,
-          delayMs: routeIndex * 200,
-          token
-        });
-
-        routeIndex++;
-      }
-    }
-  }
-
-  setPanel("Select an object", `<p>Hover markers to preview. Click a marker to see full details.</p>`);
-}
-
-async function applyPeriod(index) {
-  if (isTransitioning) return;
-  isTransitioning = true;
-
-  const idx = Math.max(0, Math.min(index, PERIODS.length - 1));
-  periodRange.value = String(idx);
-  updatePeriodUI(idx);
-  updateActiveBand(idx);
-
-  await fadeOutLayers(markersLayer, routesLayer, 400);
-  drawForPeriod(idx);
-
-  isTransitioning = false;
-}
-
-function wireControls() {
-  periodRange.addEventListener("input", (e) => {
-    applyPeriod(Number(e.target.value));
-  });
-}
-
-function wireBands() {
-  document.querySelectorAll(".bands span").forEach((el) => {
-    const activate = () => {
-      const idx = Number(el.dataset.index);
-      if (Number.isFinite(idx) && idx >= 0 && idx < PERIODS.length) {
-        applyPeriod(idx);
-      }
-    };
-
-    el.addEventListener("click", activate);
-
-    el.addEventListener("keydown", (ev) => {
-      if (ev.key === "Enter" || ev.key === " ") {
-        ev.preventDefault();
-        activate();
-      }
-    });
-  });
-}
-
-(async function main() {
-  initMap();
-  wireControls();
-  wireBands();
-
-  try {
-    await loadData();
-    await applyPeriod(Number(periodRange.value));
-  } catch (err) {
-    setPanel("Error", `<p>${escapeHtml(err.message)}</p>`);
-    console.error(err);
-  }
-})();
+  const A = [fromLatLng.lat, fromLatLng.lng];
+  const B = [toLatLng.lat, toLatLng.lng];
+  const C =
